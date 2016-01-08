@@ -1,9 +1,9 @@
 {
   "Parameters": {
-    "BucketName": {
-      "Type": "String",
-      "Default": "",
-      "Description": "The S3 bucket to create."
+    "MemorySize": {
+      "Type": "Number",
+      "Default": "128",
+      "Description": "Memory size for Lambda function"
     }
   },
   "Resources": {
@@ -36,7 +36,7 @@
         "Timeout": 60,
         "Handler": "index.handler",
         "Runtime": "nodejs",
-        "MemorySize": 128
+        "MemorySize": { "Ref": "MemorySize" }
       }
     },
     "LambdaExecutionRole": {
@@ -92,20 +92,6 @@
                   ]
                 ]
               }
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "s3:*"
-              ],
-              "Resource": "arn:aws:s3:::fooblar"
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "s3:*"
-              ],
-              "Resource": "arn:aws:s3:::fooblar/*"
             }
           ]
         }

@@ -10,7 +10,7 @@ grunt.initConfig({
     },
     lambda_deploy: {
         default: {
-            arn: 'arn:aws:lambda:us-west-2:550196518397:function:lambda2-DaveLambda-1788FJ8TWOEMY',
+            arn: 'arn:aws:lambda:us-west-2:550196518397:function:lambda2-DaveLambda-6A52ZM8FA44W',
             options: {
                 profile: 'dliggat'
             }
