@@ -1,2 +1,5 @@
-# lambda-deploy
-Proof of concept for deploying lambda with CloudFormation + grunt+aws+lambda
+# README.md
+
+```bash
+aws cloudformation create-stack --stack-name lambda2 --template-body file://deploy.template --parameters ParameterKey=BucketName,ParameterValue=lambda-store2
+```
