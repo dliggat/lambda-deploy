@@ -56,7 +56,7 @@ exports.handler = function (event, context) {
             var output = mustache.render(data, view);
 
             var s3_params = {
-                Bucket: "lambda2-s3bucket-c4550m0c5wp5",
+                Bucket: JSON.parse(fs.readFileSync('stack-outputs.json', 'utf8'))['StackOutputs']['S3Bucket'],
                 Key: "links.html",
                 ContentType: "text/html",
                 Body: output

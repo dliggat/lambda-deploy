@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 
     var cloudformation = new AWS.CloudFormation({cloudformation: '2010-05-15'});
     var params = {
-      StackName: grunt.config.get('describe_stack.' + this.target + '.stack')
+      StackName: grunt.config('create_stack').stack
     };
     cloudformation.describeStacks(params, function(err, data) {
       if (err) {
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         stack[status[i].OutputKey] = status[i].OutputValue;
       }
       grunt.log.write(util.inspect(stack, {showHidden: false, depth: null})).ok();  // Inspect objects.
-      fs.writeFile('stack-outputs.json', JSON.stringify({'StackOutputs': stack}, null, 2), function(err) {
+      fs.writeFile(grunt.config('describe_stack').outputs, JSON.stringify({'StackOutputs': stack}, null, 2), function(err) {
         if (err) {
           grunt.log.error(err);
         }

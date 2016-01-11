@@ -1,10 +1,15 @@
 var grunt = require('grunt');
 var fs    = require('fs');
 
+var outputsFile = 'stack-outputs.json'
 grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    create_stack: {
+      stack: 'lambda2',
+      template: 'stack-definition.json'
+    },
     describe_stack: {
-      stack: 'lambda2'
+      outputs: outputsFile
     },
     jshint: {
       files: ['Gruntfile.js', 'index.js'],
@@ -25,7 +30,7 @@ grunt.initConfig({
     },
     lambda_deploy: {
         default: {
-            arn: JSON.parse(require('fs').readFileSync('stack-outputs.json', 'utf8'))['StackOutputs']['LambdaFunctionARN'],
+            arn: JSON.parse(fs.readFileSync(outputsFile, 'utf8'))['StackOutputs']['LambdaFunctionARN'],
             options: {
                 profile: 'dliggat'
             }
