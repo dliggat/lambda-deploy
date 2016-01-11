@@ -30,5 +30,5 @@ node_modules
 .env
 
 # grunt-aws-lambda lambda_deploy options
-lambda-deploy.json
+stack-outputs.json
 dist

@@ -1,20 +1,22 @@
-var cheerio = require('cheerio');
-var request = require('request');
-var url = require('url');
-var fs = require('fs');
-var mustache = require('mustache');
-var AWS = require('aws-sdk');
-var moment = require('moment');
+var cheerio = require("cheerio");
+var request = require("request");
+var url = require("url");
+var fs = require("fs");
+var mustache = require("mustache");
+var AWS = require("aws-sdk");
+var moment = require("moment");
 
 exports.handler = function (event, context) {
     request(event.webpage, function (err, response, body) {
-        if (err) console.log(err, err.stack); // an error occurred
+        if (err) {
+          console.log(err, err.stack); // an error occurred
+      }
 
         var $ = cheerio.load(body);
         var links = [];
 
         AWS.config.apiVersions = {
-            s3: '2006-03-01',
+            s3: "2006-03-01",
             // other service API versions
         };
 
@@ -25,9 +27,9 @@ exports.handler = function (event, context) {
           var href = anchor.attr("href");
           var text = anchor.text();
 
-          if (typeof href !== 'undefined') {
+          if (typeof href !== "undefined") {
             var abs = url.resolve(event.webpage, href);
-            if (text == '') {
+            if (text === "") {
                 text = abs;
             }
 
@@ -42,31 +44,33 @@ exports.handler = function (event, context) {
         }
 
     });
-        fs.readFile('template.html', 'utf8', function (err, data) {
-            if (err) console.log(err, err.stack); // an error occurred
+        fs.readFile("template.html", "utf8", function (err, data) {
+            if (err) {
+              console.log(err, err.stack); // an error occurred
+            }
             var view = {
                 links: links,
                 page: event.webpage,
-                time: moment().format('MMMM Do YYYY, h:mm:ss a')
-            }
+                time: moment().format("MMMM Do YYYY, h:mm:ss a")
+            };
             var output = mustache.render(data, view);
 
             var s3_params = {
-                Bucket: 'fooblar',
-                Key: 'links.html',
-                ContentType: 'text/html',
+                Bucket: "lambda2-s3bucket-c4550m0c5wp5",
+                Key: "links.html",
+                ContentType: "text/html",
                 Body: output
             };
             s3.putObject(s3_params, function (err, data) {
                 if (err) {
-                  console.log('BOOOO');
+                  console.log("BOOOO");
                   console.log(data);
                   console.log(err, err.stack); // an error occurred
                 }
-                context.done(null, 'link-scraper complete.');
+                context.done(null, "link-scraper complete.");
             });
 
         });
 
-    })
+    });
 };
