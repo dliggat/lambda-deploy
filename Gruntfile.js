@@ -47,8 +47,8 @@ grunt.loadNpmTasks('grunt-contrib-watch');
 grunt.loadNpmTasks('grunt-aws-lambda');
 grunt.loadTasks('tasks');
 grunt.registerTask('default', ['jshint']);
-grunt.registerTask('deploy', ['create_stack',
-                              'describe_stack',
+grunt.registerTask('provision', ['create_stack']);
+grunt.registerTask('deploy', ['describe_stack',
                               'lambda_package',
                               'lambda_deploy']);
 

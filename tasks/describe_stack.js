@@ -14,6 +14,11 @@ module.exports = function(grunt) {
       if (err) {
         grunt.fail.fatal(err, err.stack);
       }
+      if (data.Stacks[0].StackStatus !== 'CREATE_COMPLETE') {
+        grunt.log.warn(util.inspect(data));
+        grunt.fail.fatal('Stack is not finished creating.');
+      }
+
       var stack  = {};
       var status = data.Stacks[0].Outputs;
       for (var i in status) {
